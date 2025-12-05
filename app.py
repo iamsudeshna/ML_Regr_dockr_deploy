@@ -46,6 +46,22 @@ def predict_api():
     return jsonify({"prediction": float(output[0])})
 #url for testing: http://127.0.0.1:5000/predict_api?MedInc=7.2574&HouseAge=53&AveRooms=8.388136&AveBedrms=1.073446
 
+@app.route('/predict')
+def predict():
+    MedInc = float(request.args.get("MedInc"))
+    HouseAge = float(request.args.get("HouseAge"))
+    AveRooms = float(request.args.get("AveRooms"))
+    AveBedrms = float(request.args.get("AveBedrms"))
+
+    # Your existing scaler + model code
+    values = [MedInc, HouseAge, AveRooms, AveBedrms]
+    new_data = scalar.transform(np.array(values).reshape(1, -1))
+    newer = [1.0] + new_data.flatten().tolist()
+    pred = model.predict(np.array(newer).reshape(1, -1))
+
+    return jsonify({"prediction": float(pred[0])})
+
+
 if __name__=="__main__":
     app.run(debug=True)
 

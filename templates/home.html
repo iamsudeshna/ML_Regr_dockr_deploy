@@ -1,3 +1,109 @@
-<h1>
-Welcome to the Home Page of ML Regression Docker Deployment
-</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>House Price Prediction</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            font-weight: 600;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 8px 0 15px 0;
+            border: 1px solid #aaa;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #007bff;
+            border: none;
+            color: white;
+            font-size: 18px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>House Price Prediction</h2>
+
+    <label>Median Income (MedInc)</label>
+    <input type="number" id="MedInc" step="0.0001">
+
+    <label>House Age</label>
+    <input type="number" id="HouseAge" step="0.1">
+
+    <label>Average Rooms</label>
+    <input type="number" id="AveRooms" step="0.0001">
+
+    <label>Average Bedrooms</label>
+    <input type="number" id="AveBedrms" step="0.0001">
+
+    <button onclick="predict()">Predict</button>
+
+    <div id="result"></div>
+</div>
+
+
+<script>
+    async function predict() {
+        const MedInc = document.getElementById("MedInc").value;
+        const HouseAge = document.getElementById("HouseAge").value;
+        const AveRooms = document.getElementById("AveRooms").value;
+        const AveBedrms = document.getElementById("AveBedrms").value;
+
+        if (!MedInc || !HouseAge || !AveRooms || !AveBedrms) {
+            alert("Please enter all values!");
+            return;
+        }
+
+        const url = `/predict?MedInc=${MedInc}&HouseAge=${HouseAge}&AveRooms=${AveRooms}&AveBedrms=${AveBedrms}`;
+
+        const response = await fetch(url);
+        const data = await response.json();
+
+        document.getElementById("result").innerHTML =
+            "Prediction: " + data.prediction;
+    }
+</script>
+
+</body>
+</html>
